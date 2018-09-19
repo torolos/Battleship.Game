@@ -28,21 +28,19 @@ namespace Lib
             }
         }
         /// <summary>
-        /// Wraps the 'foreach' loop for <see cref="IEnumerable{T}"/> objects
+        /// Returns a randomly selected item from a <see cref="IEnumerable{T}"/> instance
         /// </summary>
+        /// <typeparam name="T">The enumerable argument</typeparam>
         /// <param name="instance">The <see cref="IEnumerable{T}"/> instance</param>
-        /// <param name="func">The <see cref="Func{T, TResult}"/> to invoke</param>
         /// <returns></returns>
-        public static R ForEach<T, R>(this IEnumerable<T> instance, Func<T, R> func)
+        public static T Random<T>(this IEnumerable<T> instance)
         {
             if (instance.Any())
             {
-                foreach(var item in instance)
-                {
-                    return func.Invoke(item);
-                }
+                var index = GameUtility.CreateRandom(0, instance.Count());
+                return instance.ElementAt(index);
             }
-            return default(R);
+            return default(T);
         }
     }
 }

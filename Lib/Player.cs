@@ -12,7 +12,7 @@ namespace Lib
     public class Player
     {
         private ShipList shipList;
-        private List<Coordinate> usedCoordinates = new List<Coordinate>();
+        protected List<Coordinate> usedCoordinates = new List<Coordinate>();
         /// <summary>
         /// Ctor
         /// </summary>
@@ -52,10 +52,15 @@ namespace Lib
         /// <returns>A <see cref="AttemptResult"/> instance</returns>
         public AttemptResult HitOpponent(Player opponent, Coordinate coordinate)
         {
+            if (opponent.Equals(this))
+            {
+                // TODO: Handle self hit
+            }
             if (usedCoordinates.Contains(coordinate))
             {
                 return new AttemptResult(ResultType.Used, null, coordinate);
             }
+            usedCoordinates.Add(coordinate);
             return opponent.Strike(coordinate);
         }
     }
