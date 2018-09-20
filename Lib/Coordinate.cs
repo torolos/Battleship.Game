@@ -102,19 +102,14 @@ namespace Lib
             return new Coordinate(this.Row - 1, this.Column);
         }
         public Coordinate Down()
-        {
+        {            
             return new Coordinate(this.Row + 1, this.Column);
         }
-        public List<Coordinate> RandomShift(params Func<Coordinate>[] invokers)
+        public Coordinate RandomShift(params Func<Coordinate>[] invokers)
         {
-            var result = new List<Coordinate>();
-            invokers.AsEnumerable().ForEach(i =>
-            {
-                result.Add(i.Invoke());
-            });
-            return result;
+            var index = GameUtility.CreateRandom(0, invokers.Count());
+            return invokers.ToList()[index].Invoke();
         }
-
         #endregion
     }
 }

@@ -8,6 +8,6 @@ namespace Lib
 {
     public interface IComputerIntelligence
     {
-        AttemptResult AutoPlay(IList<Coordinate> previousHits);
+        Coordinate NextCoordinate(IList<Coordinate> previousHits, IList<Coordinate> exclusions);
     }
 }

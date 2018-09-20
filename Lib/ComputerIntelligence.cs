@@ -8,9 +8,14 @@ namespace Lib
 {
     public class ComputerIntelligence : IComputerIntelligence
     {
-        public AttemptResult AutoPlay(IList<Coordinate> previousHits)
+        public Coordinate NextCoordinate(IList<Coordinate> previousHits, IList<Coordinate> exclusions)
         {
-            throw new NotImplementedException();
+            Coordinate coordinate;
+            if (previousHits.Any())
+            {
+                
+            }
+            return GameUtility.CreateRandomCoordinate(exclusions);
         }
     }
 }
