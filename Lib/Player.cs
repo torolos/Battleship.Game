@@ -9,7 +9,7 @@ namespace Lib
     /// <summary>
     /// Player class
     /// </summary>
-    public class Player
+    public class Player: IPlayer
     {
         private ShipList shipList;
         protected List<Coordinate> usedCoordinates = new List<Coordinate>();
@@ -20,37 +20,25 @@ namespace Lib
         {
             Init(); 
         }
-        /// <summary>
-        /// Initialises player
-        /// </summary>
+        /// <inheritDoc />
         public void Init()
         {
             shipList = new ShipList();
             usedCoordinates.Clear();
         }
-        /// <summary>
-        /// Resets player
-        /// </summary>
+        /// <inheritDoc />
         public void Reset()
         {
             Init();
         }
-        /// <summary>
-        /// Method for checking received hit
-        /// </summary>
-        /// <param name="coordinate">The coordinate to check</param>
-        /// <returns>A <see cref="AttemptResult"/></returns>
+
+        /// <inheritDoc />
         public AttemptResult Strike(Coordinate coordinate)
         {
             return shipList.TryReceivesStrike(coordinate);
         }
-        /// <summary>
-        /// Attempts a hit to the specified <see cref="Player"/> opponent.
-        /// </summary>
-        /// <param name="opponent">The opponent</param>
-        /// <param name="coordinate">The coordinate to try</param>
-        /// <returns>A <see cref="AttemptResult"/> instance</returns>
-        public AttemptResult HitOpponent(Player opponent, Coordinate coordinate)
+        /// <inheritDoc />
+        public AttemptResult HitOpponent(IPlayer opponent, Coordinate coordinate)
         {
             if (opponent.Equals(this))
             {
