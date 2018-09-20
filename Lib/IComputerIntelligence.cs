@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lib.Interfaces
+namespace Lib
 {
-    public interface IOutputWrapper
+    public interface IComputerIntelligence
     {
-        
+        AttemptResult AutoPlay(IList<Coordinate> previousHits);
     }
 }

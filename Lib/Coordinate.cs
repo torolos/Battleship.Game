@@ -87,5 +87,34 @@ namespace Lib
             return coordinate1.Row != coordinate2.Row || coordinate1.Column != coordinate2.Column;
         }
         #endregion
+
+        #region public
+        public Coordinate Right()
+        {
+            return new Coordinate(this.Row, this.Column + 1);
+        }
+        public Coordinate Left()
+        {
+            return new Coordinate(this.Row, this.Column - 1);
+        }
+        public Coordinate Up()
+        {
+            return new Coordinate(this.Row - 1, this.Column);
+        }
+        public Coordinate Down()
+        {
+            return new Coordinate(this.Row + 1, this.Column);
+        }
+        public List<Coordinate> RandomShift(params Func<Coordinate>[] invokers)
+        {
+            var result = new List<Coordinate>();
+            invokers.AsEnumerable().ForEach(i =>
+            {
+                result.Add(i.Invoke());
+            });
+            return result;
+        }
+
+        #endregion
     }
 }

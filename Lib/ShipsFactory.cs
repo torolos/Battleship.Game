@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Lib
 {
     /// inheritDoc
-    public class ShipsFactory : IShipsFactory
+    public class ShipsFactory
     {
         /// inheritDoc
         public IList<Ship> CreateShips()

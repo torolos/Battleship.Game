@@ -25,7 +25,7 @@ namespace Lib
         /// </summary>
         public void Init()
         {
-            shipList = new ShipList(new ShipsFactory());
+            shipList = new ShipList();
             usedCoordinates.Clear();
         }
         /// <summary>

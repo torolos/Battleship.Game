@@ -43,17 +43,14 @@
   <ItemGroup>
     <Compile Include="AttemptResult.cs" />
     <Compile Include="Battleship.cs" />
+    <Compile Include="ComputerIntelligence.cs" />
     <Compile Include="ComputerPlayer.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="Destroyer.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="GameUtility.cs" />
-    <Compile Include="Interfaces\IComputerPlayerIntel.cs" />
-    <Compile Include="Interfaces\IGameController.cs" />
-    <Compile Include="Interfaces\IInputWrapper.cs" />
-    <Compile Include="Interfaces\IOutputWrapper.cs" />
-    <Compile Include="Interfaces\IShipsFactory.cs" />
+    <Compile Include="IComputerIntelligence.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultType.cs" />

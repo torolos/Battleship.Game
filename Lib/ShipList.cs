@@ -13,9 +13,9 @@ namespace Lib
         /// Ctor
         /// </summary>
         /// <param name="shipsFactory">The <see cref="IShipsFactory"/> instance</param>
-        public ShipList(IShipsFactory shipsFactory)
+        public ShipList()
         {
-            ships = shipsFactory.CreateShips();
+            ships = new ShipsFactory().CreateShips();
         }
         /// <summary>
         /// Checks whether the received coordinate strikes a ship
