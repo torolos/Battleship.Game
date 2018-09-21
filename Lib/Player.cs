@@ -13,6 +13,7 @@ namespace Lib
     {
         private ShipList shipList;
         protected List<Coordinate> usedCoordinates = new List<Coordinate>();
+        
         /// <summary>
         /// Ctor
         /// </summary>

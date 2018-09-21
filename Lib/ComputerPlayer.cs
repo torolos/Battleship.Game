@@ -9,14 +9,14 @@ namespace Lib
     public class ComputerPlayer: Player, IComputerPlayer
     {
         private List<Coordinate> successfulHits = new List<Coordinate>();
-        private readonly IComputerIntelligence computerIntel;
+        private readonly ICoordinateUtility coordinateUtility;
         /// <summary>
         /// Ctor
         /// </summary>
         /// <param name="computerIntel">A <see cref="IComputerIntelligence"/> object</param>
-        public ComputerPlayer(IComputerIntelligence computerIntel)
+        public ComputerPlayer(ICoordinateUtility coordinateUtility)
         {
-            this.computerIntel = computerIntel;
+            this.coordinateUtility = coordinateUtility;
         }
         /// <inheritDoc />
         public AttemptResult AutoPlay(IPlayer opponent)
@@ -32,14 +32,9 @@ namespace Lib
 
         private Coordinate GetCoordinateFromSuccessful()
         {
-            if (successfulHits.Count == 1)
+            if (coordinateUtility.TryGetAdjacent(successfulHits, usedCoordinates, out IList<Coordinate> result))
             {
-                var candidates = new TileInfo(successfulHits.First(), GameUtility.BOARD_SIZE).AvailableCoordinates;
-                return candidates.Random().Value.First();
-            }
-            else
-            {
-
+                return result[GameUtility.CreateRandom(0, result.Count())];
             }
             return GameUtility.CreateRandomCoordinate(usedCoordinates);
         }

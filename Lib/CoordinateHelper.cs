@@ -6,50 +6,82 @@ using System.Threading.Tasks;
 
 namespace Lib
 {
-    public class CoordinateHelper
+    /// <inheritDoc />
+    public class CoordinateHelper: ICoordinateUtility
     {
-        public delegate bool Move(out Coordinate coordinate);
-        public Coordinate[] GetAdjacentNeighbours(Coordinate coordinate, int boardSize)
+        private delegate bool Move(out Coordinate coordinate);
+        private readonly IGameSettings settings;
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="settings">The <see cref="IGameSettings"/> instance</param>
+        public CoordinateHelper(IGameSettings settings)
+        {
+            this.settings = settings;
+        }
+        /// <inheritDoc />
+        public IList<Coordinate> GetAdjacent(Coordinate coordinate)
         {
             var funcs = new List<Move>();
+            // If specified coordinate does not contain top row
             if (coordinate.Row > 1)
                 funcs.Add(coordinate.Up);
-            if (coordinate.Row < boardSize)
+            // If specified coordinate does not contain bottom row
+            if (coordinate.Row < settings.BoardSize)
                 funcs.Add(coordinate.Down);
+            // If specified coordinate does not contain outer left column
             if (coordinate.Column > 1)
                 funcs.Add(coordinate.Left);
-            if (coordinate.Column < boardSize)
+            // If specified coordinate does not containt outer right column
+            if (coordinate.Column < settings.BoardSize)
                 funcs.Add(coordinate.Right);
 
             var result = new List<Coordinate>();
-            foreach (var func in funcs)
+#pragma warning disable
+            funcs.ForEach(f =>
             {
-                if (func(out Coordinate coor))
-                {
-                    result.Add(coor);
-                }
-            }
+                if (f(out Coordinate c))
+                    result.Add(c);
+            });
+#pragma warning restore
+            
             return result.ToArray();
         }
-
-        public Coordinate[] GetAdjacentNeighbours(Coordinate[] coordinates, int boardSize)
+        /// <inheritDoc />
+        public IList<Coordinate> GetAdjacent(IList<Coordinate> coordinates)
         {
+            // if single coordinate then get adjacencies for this one
             if (coordinates.Count() == 1)
-                return GetAdjacentNeighbours(coordinates.First(), boardSize);
+                return GetAdjacent(coordinates.First());
+
             Func<Coordinate, bool> check = null;
+            // Check if coordinates in same row
             if (coordinates.Select(c => c.Row).Distinct().Count() == 1)
             {
                 check = cr => cr.Row == coordinates.First().Row;
             }
+            // Check if coordinates in same column
             if (coordinates.Select(c => c.Column).Distinct().Count() == 1)
             {
                 check = cr => cr.Column == coordinates.First().Column;
             }
-            var available = coordinates.Select(c => GetAdjacentNeighbours(c, boardSize)).SelectMany(c => c).ToArray();
-
-            return available.Where(c => check(c) && !coordinates.Contains(c)).Distinct().ToArray();
+            // Get total available for specified coordinates
+            var available = coordinates.Select(c => GetAdjacent(c)).SelectMany(c => c).ToArray();
+            // Filter out specificed coordinates and return distinct result
+            return available.Where(c => check(c) && !coordinates.Contains(c)).Distinct().ToList();
         }
-
-
+        /// <inheritDoc />
+        public bool TryGetAdjacent(IList<Coordinate> coordinates, 
+            IList<Coordinate> exclusions, out IList<Coordinate> result)
+        {
+            result = new List<Coordinate>();
+            var res = GetAdjacent(coordinates);
+            if (res.Any())
+            {
+                result = res.Where(c => !exclusions.Contains(c)).ToList();
+                return result.Any();
+            }
+            return false;
+        }
     }
 }

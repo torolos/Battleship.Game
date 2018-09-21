@@ -51,12 +51,15 @@
     <Compile Include="Destroyer.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="GameHandler.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="GameUtility.cs" />
     <Compile Include="IComputerIntelligence.cs" />
     <Compile Include="IComputerPlayer.cs" />
+    <Compile Include="ICoordinateUtility.cs" />
     <Compile Include="IGameSettings.cs" />
     <Compile Include="IPlayer.cs" />
+    <Compile Include="IWriter.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="ResultType.cs" />
     <Compile Include="Ship.cs" />
