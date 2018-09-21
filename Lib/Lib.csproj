@@ -46,6 +46,7 @@
     <Compile Include="ComputerIntelligence.cs" />
     <Compile Include="ComputerPlayer.cs" />
     <Compile Include="Coordinate.cs" />
+    <Compile Include="CoordinateHelper.cs" />
     <Compile Include="Destroyer.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Extensions.cs" />

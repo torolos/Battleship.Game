@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComputerIntelligenceTests.cs" />
+    <Compile Include="CoordinateHelperTests.cs" />
     <Compile Include="ShipsFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

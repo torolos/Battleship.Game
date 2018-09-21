@@ -89,21 +89,57 @@ namespace Lib
         #endregion
 
         #region public
-        public Coordinate Right()
+        public bool Up(out Coordinate coordinate)
         {
-            return new Coordinate(this.Row, this.Column + 1);
+            try
+            {
+                coordinate = new Coordinate(this.Row - 1, this.Column);
+                return true;
+            }
+            catch (System.ArgumentException)
+            {
+                coordinate = new Coordinate();
+                return false;
+            }
         }
-        public Coordinate Left()
+        public bool Down(out Coordinate coordinate)
         {
-            return new Coordinate(this.Row, this.Column - 1);
+            try
+            {
+                coordinate = new Coordinate(this.Row + 1, this.Column);
+                return true;
+            }
+            catch (System.ArgumentException)
+            {
+                coordinate = new Coordinate();
+                return false;
+            }
         }
-        public Coordinate Up()
+        public bool Left(out Coordinate coordinate)
         {
-            return new Coordinate(this.Row - 1, this.Column);
+            try
+            {
+                coordinate = new Coordinate(this.Row, this.Column - 1);
+                return true;
+            }
+            catch (System.ArgumentException)
+            {
+                coordinate = new Coordinate();
+                return false;
+            }
         }
-        public Coordinate Down()
-        {            
-            return new Coordinate(this.Row + 1, this.Column);
+        public bool Right(out Coordinate coordinate)
+        {
+            try
+            {
+                coordinate = new Coordinate(this.Row, this.Column + 1);
+                return true;
+            }
+            catch (System.ArgumentException)
+            {
+                coordinate = new Coordinate();
+                return false;
+            }
         }
         public Coordinate RandomShift(params Func<Coordinate>[] invokers)
         {
