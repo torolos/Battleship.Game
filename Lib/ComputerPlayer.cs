@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace Lib
 {
-    public class ComputerPlayer: Player
+    public class ComputerPlayer: Player, IComputerPlayer
     {
         private List<Coordinate> successfulHits = new List<Coordinate>();
+        private readonly IComputerIntelligence computerIntel;
         /// <summary>
-        /// Method that automatically plays a hit for the computer
+        /// Ctor
         /// </summary>
-        /// <param name="opponent">The opponent to strike</param>
-        /// <returns>A <see cref="AttemptResult"/> result</returns>
-        public AttemptResult AutoPlay(Player opponent)
+        /// <param name="computerIntel">A <see cref="IComputerIntelligence"/> object</param>
+        public ComputerPlayer(IComputerIntelligence computerIntel)
+        {
+            this.computerIntel = computerIntel;
+        }
+        /// <inheritDoc />
+        public AttemptResult AutoPlay(IPlayer opponent)
         {
             var coordinate = GameUtility.CreateRandomCoordinate(usedCoordinates);
             // If computer had a successful hit attempt to strike neighbouring coordinates
