@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-namespace Lib
+using Moq;
+namespace UnitTests
 {
-    public interface IWriter
+    public class GameHandlerTests
     {
-        void Write(AttemptResult result);
+
     }
 }

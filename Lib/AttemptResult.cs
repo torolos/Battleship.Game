@@ -36,5 +36,19 @@ namespace Lib
             ShipName = shipName;
             Coordinate = coordinate;
         }
+
+        public override string ToString()
+        {
+            switch(ResultType)
+            {
+                case ResultType.Miss:
+                case ResultType.Hit:
+                    return $"Attempt at {Coordinate.DisplayName} -> {ResultType.ToString()}";
+                case ResultType.Sink:                    
+                    return $"Hit at {Coordinate.DisplayName} sinks {ShipName}";
+                default:
+                    return "Unkown";
+            }
+        }
     }
 }

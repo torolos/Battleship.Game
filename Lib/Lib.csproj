@@ -48,6 +48,7 @@
     <Compile Include="ComputerPlayer.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="CoordinateHelper.cs" />
+    <Compile Include="CoordinateState.cs" />
     <Compile Include="Destroyer.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Extensions.cs" />
@@ -59,7 +60,6 @@
     <Compile Include="ICoordinateUtility.cs" />
     <Compile Include="IGameSettings.cs" />
     <Compile Include="IPlayer.cs" />
-    <Compile Include="IWriter.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="ResultType.cs" />
     <Compile Include="Ship.cs" />

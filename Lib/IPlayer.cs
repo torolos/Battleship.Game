@@ -12,6 +12,11 @@ namespace Lib
     public interface IPlayer
     {
         /// <summary>
+        /// The opponents board state. Used as a template to view which coordinates
+        /// have been used by player.
+        /// </summary>
+        IDictionary<Coordinate, CoordinateState> OpponentBoard { get; }
+        /// <summary>
         /// Initialises the player
         /// </summary>
         void Init();

@@ -147,5 +147,27 @@ namespace Lib
             return invokers.ToList()[index].Invoke();
         }
         #endregion
+
+        /// <summary>
+        /// Attempts to convert a string value to a coordinate
+        /// </summary>
+        /// <param name="coordinateValue">the coordinate value to parse</param>
+        /// <param name="coordinate">The <see cref="Coordinate"/> output</param>
+        /// <returns>true if parsing successful</returns>
+        public static bool TryParse(string coordinateValue, out Coordinate coordinate)
+        {
+            try
+            {
+                coordinate = new Coordinate(coordinateValue);
+                return true;
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                coordinate = new Coordinate();
+                return false;
+            }
+        }
+
     }
 }

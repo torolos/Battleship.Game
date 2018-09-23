@@ -22,7 +22,7 @@ namespace Lib
         /// </summary>
         /// <param name="coordinate">The coordinate to check</param>
         /// <returns>A <see cref="AttemptResult"/> instance.</returns>
-        public AttemptResult TryReceivesStrike(Coordinate coordinate)
+        public AttemptResult TryReceiveStrike(Coordinate coordinate)
         {
             var result = new AttemptResult(ResultType.Miss, null, coordinate);
             foreach(var ship in ships)

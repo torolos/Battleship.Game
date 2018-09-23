@@ -13,15 +13,16 @@ namespace Lib
         /// <summary>
         /// Ctor
         /// </summary>
-        /// <param name="computerIntel">A <see cref="IComputerIntelligence"/> object</param>
-        public ComputerPlayer(ICoordinateUtility coordinateUtility)
+        /// <param name="computerUtility">A <see cref="ICoordinateUtility"/> object</param>
+        public ComputerPlayer(ICoordinateUtility coordinateUtility, IGameSettings gameSettings): base("Computer", gameSettings)
         {
             this.coordinateUtility = coordinateUtility;
         }
         /// <inheritDoc />
         public AttemptResult AutoPlay(IPlayer opponent)
         {
-            var coordinate = GameUtility.CreateRandomCoordinate(usedCoordinates);
+            
+            var coordinate = GameUtility.CreateRandomCoordinate(Used());
             // If computer had a successful hit attempt to strike neighbouring coordinates
             if (successfulHits.Any())
             {
@@ -32,11 +33,11 @@ namespace Lib
 
         private Coordinate GetCoordinateFromSuccessful()
         {
-            if (coordinateUtility.TryGetAdjacent(successfulHits, usedCoordinates, out IList<Coordinate> result))
+            if (coordinateUtility.TryGetAdjacent(successfulHits, Used(), out IList<Coordinate> result))
             {
                 return result[GameUtility.CreateRandom(0, result.Count())];
             }
-            return GameUtility.CreateRandomCoordinate(usedCoordinates);
+            return GameUtility.CreateRandomCoordinate(Used());
         }
     }
 }

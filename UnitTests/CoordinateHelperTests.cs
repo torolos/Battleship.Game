@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Lib;
+using Moq;
+
 namespace UnitTests
 { 
     [TestFixture]
@@ -19,10 +21,12 @@ namespace UnitTests
         [TestCase("G8", new string[] { "G7", "F8", "G9", "H8" })]
         public void GetPotentialCandidatesBasedOnOneCoordinate(string point, string[] results)
         {
+            var settingsMock = new Mock<IGameSettings>();
+            settingsMock.SetupGet(c => c.BoardSize).Returns(10);
             var coordinate = new Coordinate(point);
             var expected = results.Select(c => new Coordinate(c));
-            var helper = new CoordinateHelper();
-            var adjacent = helper.GetAdjacentNeighbours(coordinate, 10);
+            var helper = new CoordinateHelper(settingsMock.Object);
+            var adjacent = helper.GetAdjacent(coordinate);
 
             var matching = adjacent.Count(c => expected.Contains(c)) == expected.Count();
 
@@ -39,8 +43,10 @@ namespace UnitTests
         [TestCase(new string[] { "B4", "B5", "B7" }, new string[] { "B6", "B8", "B3" })]
         public void GetPotentialCandidatesBasedOnMultipleCoordinate(string[] points, string[] results)
         {
+            var settingsMock = new Mock<IGameSettings>();
+            settingsMock.SetupGet(c => c.BoardSize).Returns(10);
             var expected = results.Select(c => new Coordinate(c)).ToArray();
-            var adjacent = new CoordinateHelper().GetAdjacentNeighbours(points.Select(c => new Coordinate(c)).ToArray(), 10);
+            var adjacent = new CoordinateHelper(settingsMock.Object).GetAdjacent(points.Select(c => new Coordinate(c)).ToArray());
 
             var matching = adjacent.Count(c => expected.Contains(c)) == expected.Count();
 

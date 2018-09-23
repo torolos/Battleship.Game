@@ -12,45 +12,90 @@ namespace Lib
     public class Player: IPlayer
     {
         private ShipList shipList;
-        protected List<Coordinate> usedCoordinates = new List<Coordinate>();
-        
+        protected readonly IGameSettings gameSettings;
+        private string playerName;     
         /// <summary>
         /// Ctor
         /// </summary>
-        public Player()
+        public Player(string playerName, IGameSettings gameSettings)
         {
+            this.playerName = playerName;
+            this.gameSettings = gameSettings;
             Init(); 
         }
+
+        #region IPlayer
+        /// <inheritDoc />
+        public IDictionary<Coordinate, CoordinateState> OpponentBoard { get; }
+            = new Dictionary<Coordinate, CoordinateState>();
         /// <inheritDoc />
         public void Init()
         {
             shipList = new ShipList();
-            usedCoordinates.Clear();
+            InitOpponentBoard();
         }
         /// <inheritDoc />
         public void Reset()
         {
             Init();
         }
-
         /// <inheritDoc />
         public AttemptResult Strike(Coordinate coordinate)
         {
-            return shipList.TryReceivesStrike(coordinate);
+            return shipList.TryReceiveStrike(coordinate);
         }
         /// <inheritDoc />
         public AttemptResult HitOpponent(IPlayer opponent, Coordinate coordinate)
         {
-            if (opponent.Equals(this))
-            {
-                // TODO: Handle self hit
-            }
-            if (usedCoordinates.Contains(coordinate))
+            if (Used().Contains(coordinate))
             {
                 return new AttemptResult(ResultType.Used, null, coordinate);
             }
-            usedCoordinates.Add(coordinate);
-            return opponent.Strike(coordinate);
+            Used().Add(coordinate);
+            var result = opponent.Strike(coordinate);
+            UpdateOpponentBoard(coordinate, result.ResultType);
+            return result;
         }
+        #endregion
+
+        #region protected
+        protected bool CoordinateIsUsed(Coordinate coordinate)
+        {
+            return OpponentBoard[coordinate] != CoordinateState.None;
+        }
+
+        protected IList<Coordinate> Used()
+        {
+            return OpponentBoard.Where(c => c.Value != CoordinateState.None).Select(c => c.Key).ToList();
+        }
+        #endregion
+
+        #region private
+        private void InitOpponentBoard()
+        {
+            OpponentBoard.Clear();
+            for (var row = 1; row <= gameSettings.BoardSize; row++)
+            {
+                for(var column = 1; column <= gameSettings.BoardSize; column++)
+                {
+                    OpponentBoard.Add(new Coordinate(row, column), CoordinateState.None);
+                }
+            }            
+        }
+
+        private void UpdateOpponentBoard(Coordinate coordinate, ResultType resultType)
+        {
+            var hitTypes = new ResultType[] { ResultType.Hit, ResultType.Sink };
+            if (hitTypes.Contains(resultType))
+            {
+                OpponentBoard[coordinate] = CoordinateState.Hit;
+            }
+            else
+            {
+                OpponentBoard[coordinate] = CoordinateState.Tried;
+            }
+        }
+        #endregion
+
     }
 }
