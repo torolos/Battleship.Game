@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Lib
 {
-    public interface IComputerIntelligence
+    /// <inheritDoc />
+    public class GameSettings : IGameSettings
     {
-        Coordinate NextCoordinate(IList<Coordinate> previousHits, IList<Coordinate> exclusions);
+        /// <inheritDoc />
+        public int BoardSize => 10;
     }
 }

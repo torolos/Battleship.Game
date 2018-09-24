@@ -10,15 +10,13 @@ namespace Lib
     {
         private static Random random = new Random();
 
-        public const int BOARD_SIZE = 10;
-
         /// <summary>
         /// Generates a random coordinate
         /// </summary>
         /// <returns>A <see cref="Coordinate"/> instance</returns>
-        public static Coordinate CreateRandomCoordinate()
+        public static Coordinate CreateRandomCoordinate(int boardSize)
         {
-            var max = BOARD_SIZE + 1;
+            var max = boardSize;
             var row = Convert.ToByte(CreateRandom(1, max));
             var column = Convert.ToByte(CreateRandom(1, max));
             return new Coordinate(row, column);
@@ -28,12 +26,12 @@ namespace Lib
         /// </summary>
         /// <param name="excludeList">The list of coordinates the generator should exclude</param>
         /// <returns>A <see cref="Coordinate"/> instance</returns>
-        public static Coordinate CreateRandomCoordinate(IList<Coordinate> excludeList)
+        public static Coordinate CreateRandomCoordinate(IList<Coordinate> excludeList, int boardSize)
         {
-            var coordinate = CreateRandomCoordinate();
+            var coordinate = CreateRandomCoordinate(boardSize);
             while (excludeList.Contains(coordinate))
             {
-                coordinate = CreateRandomCoordinate();
+                coordinate = CreateRandomCoordinate(boardSize);
             }
             return coordinate;
         }

@@ -11,7 +11,7 @@ namespace Lib
     /// </summary>
     public class TileInfo
     {
-        private readonly byte boardSize;
+        private readonly int boardSize;
         /// <summary>
         /// The current coordinate
         /// </summary>
@@ -26,7 +26,7 @@ namespace Lib
         /// </summary>
         /// <param name="coordinate">The coordinate.</param>
         /// <param name="boardSize">The board size</param>
-        public TileInfo(Coordinate coordinate, byte boardSize)
+        public TileInfo(Coordinate coordinate, int boardSize)
         {
             this.boardSize = boardSize;
             Coordinate = coordinate;

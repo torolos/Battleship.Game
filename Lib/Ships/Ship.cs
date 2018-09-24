@@ -7,16 +7,13 @@ namespace Lib
 {
     public abstract class Ship
     {
+        protected int hits;
         public List<Coordinate> Coordinates { get; protected set; } = new List<Coordinate>();
 
         /// <summary>
         /// Event for that raises when ship is sank
         /// </summary>
         public event EventHandler ShipSank;
-        /// <summary>
-        /// The hits the ship has received
-        /// </summary>
-        public int Hits { get; private set; }
         /// <summary>
         /// The ship's name
         /// </summary>
@@ -34,7 +31,7 @@ namespace Lib
             if (ValidCoordinate(coordinate))
             {
                 Coordinates.Remove(coordinate);
-                Hits += 1;
+                hits += 1;
                 return true;
             }
             return false;
@@ -44,7 +41,7 @@ namespace Lib
         /// </summary>
         public void Init()
         {
-            Hits = 0;
+            hits = 0;
             this.Coordinates.Clear();
         }
         /// <summary>
@@ -75,7 +72,7 @@ namespace Lib
         /// <returns></returns>
         public bool IsShipSank()
         {
-            return Hits == Size;
+            return hits == Size;
         }
 
         private bool CanFit(IList<Coordinate> coordinates)

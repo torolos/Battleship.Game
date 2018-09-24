@@ -36,11 +36,6 @@ namespace Lib
         /// <param name="column">The byte value for the column</param>  
         public Coordinate(int row, int column)
         {
-            if (row > GameUtility.BOARD_SIZE || column > GameUtility.BOARD_SIZE
-                || row == 0 || column == 0)
-            {
-                throw new ArgumentException("You cannot have more than 26 rows", nameof(row));
-            }
             Row = row;
             Column = column;
             DisplayName = (char)(Row + ASCIIconverter) + Column.ToString();
@@ -63,25 +58,37 @@ namespace Lib
         #endregion
 
         #region overrides
+        /// <inheritDoc />
         public override string ToString()
         {
             return $"{DisplayName} -> ({Row},{Column})";
         }
-
+        /// <inheritDoc />
         public override bool Equals(object obj)
         {
             return obj is Coordinate && (this == (Coordinate)obj);
         }
-
+        /// <inheritDoc />
         public override int GetHashCode()
         {
             return base.GetHashCode();
         }
-
+        /// <summary>
+        ///  Equality operator
+        /// </summary>
+        /// <param name="coordinate1">the first coordinate</param>
+        /// <param name="coordinate2">the second coordinate</param>
+        /// <returns>true if coordinates are equal</returns>
         public static bool operator ==(Coordinate coordinate1, Coordinate coordinate2)
         {
             return coordinate1.Row == coordinate2.Row && coordinate1.Column == coordinate2.Column;
         }
+        /// <summary>
+        /// Inequality operator
+        /// </summary>
+        /// <param name="coordinate1">the first coordinate</param>
+        /// <param name="coordinate2">the second coordinate</param>
+        /// <returns>true if coordinates not equal</returns>
         public static bool operator !=(Coordinate coordinate1, Coordinate coordinate2)
         {
             return coordinate1.Row != coordinate2.Row || coordinate1.Column != coordinate2.Column;
@@ -89,6 +96,11 @@ namespace Lib
         #endregion
 
         #region public
+        /// <summary>
+        /// Returns the coordinate directly above
+        /// </summary>
+        /// <param name="coordinate">the new coordinate</param>
+        /// <returns>true if coordinate not in ceiling</returns>
         public bool Up(out Coordinate coordinate)
         {
             try
@@ -102,6 +114,11 @@ namespace Lib
                 return false;
             }
         }
+        /// <summary>
+        /// Return the coordinate directly below
+        /// </summary>
+        /// <param name="coordinate">the new coordinate</param>
+        /// <returns>true if coordinate not in floor</returns>
         public bool Down(out Coordinate coordinate)
         {
             try
@@ -115,6 +132,11 @@ namespace Lib
                 return false;
             }
         }
+        /// <summary>
+        /// Returns the coordinate directly to the left
+        /// </summary>
+        /// <param name="coordinate">the new coordinate</param>
+        /// <returns>true if coordinate not in outmost left column</returns>
         public bool Left(out Coordinate coordinate)
         {
             try
@@ -128,6 +150,11 @@ namespace Lib
                 return false;
             }
         }
+        /// <summary>
+        /// Returns the coordinate directly to the right
+        /// </summary>
+        /// <param name="coordinate">the new coordinate</param>
+        /// <returns>true if coordinate not in outmost right</returns>
         public bool Right(out Coordinate coordinate)
         {
             try
@@ -140,11 +167,6 @@ namespace Lib
                 coordinate = new Coordinate();
                 return false;
             }
-        }
-        public Coordinate RandomShift(params Func<Coordinate>[] invokers)
-        {
-            var index = GameUtility.CreateRandom(0, invokers.Count());
-            return invokers.ToList()[index].Invoke();
         }
         #endregion
 

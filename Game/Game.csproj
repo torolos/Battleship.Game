@@ -43,8 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AttemptResultWriter.cs" />
-    <Compile Include="PlayerRenderer.cs" />
+    <Compile Include="Shell.cs" />
+    <Compile Include="PlayerUtil.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

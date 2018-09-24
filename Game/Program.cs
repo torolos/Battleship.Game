@@ -9,117 +9,65 @@ namespace Game
 {
     class Program
     {
-        static GameHandler handler;
-        static void Main(string[] args)
+        static void Main()
         {
             var settings = new GameSettings();
-            Console.WriteLine("Please enter your name:");
-            var playerName = Console.ReadLine();
+            var playerName = Shell.Read("Please enter your name:");
             
             var player = new Player(string.IsNullOrWhiteSpace(playerName)? nameof(Player): playerName, settings);
             var computerPlayer = new ComputerPlayer(new CoordinateHelper(settings), settings);
-            handler = new GameHandler(player, computerPlayer);
-            var writer = new AttemptResultWriter();
+            var handler = new GameHandler(player, computerPlayer);
+
             handler.TurnComplete += (s, e) =>
             {
-                writer.Write(e.AttemptResult, s, e.Receiver);
+                Shell.Write(e.AttemptResult, s, e.Receiver);
                 if (e.AttemptResult.ResultType != ResultType.GameEnds)
-                {
+                {                   
                     if (e.Receiver is IComputerPlayer)
                     {
-                        RenderPlayer(s);
+                        if (e.AttemptResult.ResultType == ResultType.Used)
+                        {
+                            WaitForPlayer(handler, true);
+                        }
+                        PlayerUtil.RenderPlayer(s);
                         handler.ComputerAttempt();
                     }
                     else
                     {
-                        WaitForPlayer();
+                        WaitForPlayer(handler);
                     }
                 }
+                else
+                {
+                    PromptReplay(handler);
+                }
             };
-            WaitForPlayer();
-            Console.ReadKey();
+            WaitForPlayer(handler);            
         }
-
-        
-        static void WaitForPlayer()
+       
+        static void WaitForPlayer(GameHandler handler, bool retry = false)
         {
             Coordinate coordinate;
-            Console.WriteLine("Enter coordinate:");
+            if (!retry)
+                Shell.WriteDefault("Enter coordinate:");
             var coor = Console.ReadLine();
             while (!Coordinate.TryParse(coor, out coordinate))
             {
-                Console.WriteLine("Incorrect value, please try again.");
-                coor = Console.ReadLine();
+                coor = Shell.Read("Incorrect value, please try again.");
             }
             handler.PlayerAttempt(coordinate);
-        }
-
-        static bool WaitForComputer()
+        } 
+        
+        static void PromptReplay(GameHandler handler)
         {
-            throw new NotImplementedException();
-        }
-
-        static void PromptForReplay()
-        {
-
-        }
-
-
-
-        #region test
-        static void TestRender(IPlayer player)
-        {
-            var counter = 0;
-
-            var used = new List<Coordinate>();
-            while (counter < 10)
+            var key = Shell.ReadKey("Press 'n' to start a new game.");
+            if (key.KeyChar == 'N' || key.KeyChar == 'n')
             {
-                var coor = GameUtility.CreateRandomCoordinate();
-                player.OpponentBoard[coor] = CoordinateState.Hit;
-                used.Add(coor);
-                counter += 1;
+                handler.Reset();
+                WaitForPlayer(handler);
             }
-            counter = 0;
-            while (counter < 10)
-            {
-                var coor = GameUtility.CreateRandomCoordinate(used);
-                player.OpponentBoard[coor] = CoordinateState.Tried;
-                used.Add(coor);
-                counter += 1;
-            }
-            RenderPlayer(player);
-        }
-        #endregion
-        static void RenderPlayer(IPlayer player)
-        {
-            string getStateChar(Coordinate coordinate)
-            {
-                var state = player.OpponentBoard[coordinate];
-                switch (state)
-                {
-                    case CoordinateState.Hit:
-                        return " o ";
-                    case CoordinateState.Tried:
-                        return " x ";
-                    default:
-                        return "   ";
-                }
-            }
-
-            Console.WriteLine("    1   2   3   4   5   6   7   8   9  10");
-            Console.WriteLine("  -----------------------------------------");
-
-            var list = new List<Coordinate>();
-            for (var i = 1; i <= 10; i++)
-            {
-                list.AddRange(player.OpponentBoard.Select(c => c.Key).Where(c => c.Row == i).ToList());
-                var rowChar = list.First().DisplayName.Substring(0, 1);
-                // "A |   |   |   |   |   |   |   |   |   |   |"
-
-                Console.WriteLine($"{rowChar} |{string.Join("|", list.Select(c => getStateChar(c))) }|");
-                list.Clear();
-                Console.WriteLine("  -----------------------------------------");
-            }          
+            else
+                Shell.ReadKey("Press any key to close...");
         }
     }
 }

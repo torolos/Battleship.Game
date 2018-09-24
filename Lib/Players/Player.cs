@@ -31,7 +31,7 @@ namespace Lib
         /// <inheritDoc />
         public void Init()
         {
-            shipList = new ShipList();
+            shipList = new ShipList(gameSettings);
             InitOpponentBoard();
         }
         /// <inheritDoc />
@@ -51,7 +51,7 @@ namespace Lib
             {
                 return new AttemptResult(ResultType.Used, null, coordinate);
             }
-            Used().Add(coordinate);
+            //Used().Add(coordinate);
             var result = opponent.Strike(coordinate);
             UpdateOpponentBoard(coordinate, result.ResultType);
             return result;
@@ -85,7 +85,7 @@ namespace Lib
 
         private void UpdateOpponentBoard(Coordinate coordinate, ResultType resultType)
         {
-            var hitTypes = new ResultType[] { ResultType.Hit, ResultType.Sink };
+            var hitTypes = new ResultType[] { ResultType.Hit, ResultType.Sink, ResultType.GameEnds };
             if (hitTypes.Contains(resultType))
             {
                 OpponentBoard[coordinate] = CoordinateState.Hit;

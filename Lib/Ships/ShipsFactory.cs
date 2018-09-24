@@ -9,9 +9,19 @@ namespace Lib
     /// inheritDoc
     public class ShipsFactory
     {
+        private readonly IGameSettings gameSettings;
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="gameSettings"></param>
+        public ShipsFactory(IGameSettings gameSettings)
+        {
+            this.gameSettings = gameSettings;
+        }
         /// inheritDoc
         public IList<Ship> CreateShips()
         {
+            var gameSize = gameSettings.BoardSize;
             var ships = GetShips();
             var unusableCoordinates = new List<Coordinate>();
             var result = new List<Ship>();
@@ -19,13 +29,13 @@ namespace Lib
             #region getCandidates
             IDictionary<Direction, List<Coordinate>> getCandidates(ref Coordinate coordinate, byte size)
             {
-                var tileInfo = new TileInfo(coordinate, GameUtility.BOARD_SIZE);
+                var tileInfo = new TileInfo(coordinate, gameSize);
                 var candidates = tileInfo.GetCandidateTiles(size);
                 while (!candidates.Any())
                 {
                     unusableCoordinates.Add(coordinate);
-                    coordinate = GameUtility.CreateRandomCoordinate(unusableCoordinates);
-                    tileInfo = new TileInfo(coordinate, GameUtility.BOARD_SIZE);
+                    coordinate = GameUtility.CreateRandomCoordinate(unusableCoordinates, gameSize);
+                    tileInfo = new TileInfo(coordinate, gameSize);
                     candidates = tileInfo.GetCandidateTiles(size);
                 }
                 return candidates;
@@ -38,7 +48,7 @@ namespace Lib
                 while (!shipPlaced) // While no coordinates have been set for the ship
                 {
                     // Generate random coordinate
-                    var coordinate = GameUtility.CreateRandomCoordinate(unusableCoordinates);
+                    var coordinate = GameUtility.CreateRandomCoordinate(unusableCoordinates, gameSize);
                     // Get candidate coordinates. Returns the up,down,left,right coordinates for the specified ship size
                     var candidates = getCandidates(ref coordinate, s.Size);
                     var counter = 0;
@@ -62,7 +72,10 @@ namespace Lib
                         else
                         {
                             // Set Ship position and flag ship as placed
-                            s.SetPosition(element.Value);
+                            var ordered = element.Value.Take(s.Size - 1);
+                            var position = new List<Coordinate> { coordinate };
+                            position.AddRange(ordered);
+                            s.SetPosition(position);
                             shipPlaced = true;
                             break;
                         }

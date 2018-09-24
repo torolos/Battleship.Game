@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Game
 {
-    public class PlayerRenderer
+    public class PlayerUtil
     {
-        public void RenderPlayer(IPlayer player)
+        public static void RenderPlayer(IPlayer player)
         {
             string getStateChar(Coordinate coordinate)
             {
@@ -24,9 +24,9 @@ namespace Game
                         return "   ";
                 }
             }
-
-            Console.WriteLine("    1   2   3   4   5   6   7   8   9  10");
-            Console.WriteLine("  -----------------------------------------");
+            Shell.WriteDefault("");
+            Shell.WriteDefault("    1   2   3   4   5   6   7   8   9  10");
+            Shell.WriteDefault("  -----------------------------------------");
 
             var list = new List<Coordinate>();
             for (var i = 1; i <= 10; i++)
@@ -35,10 +35,11 @@ namespace Game
                 var rowChar = list.First().DisplayName.Substring(0, 1);
                 // "A |   |   |   |   |   |   |   |   |   |   |"
 
-                Console.WriteLine($"{rowChar} |{string.Join("|", list.Select(c => getStateChar(c))) }|");
+                Shell.WriteDefault($"{rowChar} |{string.Join("|", list.Select(c => getStateChar(c))) }|");
                 list.Clear();
-                Console.WriteLine("  -----------------------------------------");
+                Shell.WriteDefault("  -----------------------------------------");
             }
+            Shell.WriteDefault("");
         }
     }
 }

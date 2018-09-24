@@ -11,9 +11,9 @@ namespace Lib
     /// </summary>
     public class Battleship : Ship
     {
-        /// inheritDoc
+        /// <inheritDoc />
         public override string Name => nameof(Battleship);
-        /// inheritDoc
+        /// <inheritDoc />
         public override byte Size => 5;
     }
 }

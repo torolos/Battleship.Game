@@ -27,20 +27,5 @@ namespace Lib
                 }
             }
         }
-        /// <summary>
-        /// Returns a randomly selected item from a <see cref="IEnumerable{T}"/> instance
-        /// </summary>
-        /// <typeparam name="T">The enumerable argument</typeparam>
-        /// <param name="instance">The <see cref="IEnumerable{T}"/> instance</param>
-        /// <returns></returns>
-        public static T Random<T>(this IEnumerable<T> instance)
-        {
-            if (instance.Any())
-            {
-                var index = GameUtility.CreateRandom(0, instance.Count());
-                return instance.ElementAt(index);
-            }
-            return default(T);
-        }
     }
 }

@@ -11,28 +11,42 @@ namespace Lib
     {
         private readonly IPlayer player;
         private readonly IComputerPlayer computerPlayer;
-
+        /// <summary>
+        /// The event handler for the event fired when a player
+        /// completes his turn.
+        /// </summary>
         public event TurnCompleteEventHandler TurnComplete;
-
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="player">The 'human' player</param>
+        /// <param name="computerPlayer">the computer opponentparam>
         public GameHandler(IPlayer player, IComputerPlayer computerPlayer)
         {
             this.player = player;
             this.computerPlayer = computerPlayer;
             Init();
         }
-
+        /// <summary>
+        /// Attempt by 'human' player
+        /// </summary>
+        /// <param name="coordinate">The coordinate used</param>
         public void PlayerAttempt(Coordinate coordinate)
         {
             var result = player.HitOpponent(computerPlayer, coordinate);
             OnPlayerTurnComplete(result, player, computerPlayer);
         }
-
+        /// <summary>
+        /// Attempt by computer player
+        /// </summary>
         public void ComputerAttempt()
         {
             var result = computerPlayer.AutoPlay(player);
             OnPlayerTurnComplete(result, computerPlayer, player);
         }
-
+        /// <summary>
+        /// Resets handler
+        /// </summary>
         public void Reset()
         {
             Init();
@@ -48,32 +62,5 @@ namespace Lib
         {
             Volatile.Read(ref TurnComplete)?.Invoke(actor, new TurnDataEventArgs(result, next));
         }
-    }
-    /// <summary>
-    /// A delegate handler firing on completion of a player's turn.
-    /// </summary>
-    /// <param name="sender">The player that made the attempt</param>
-    /// <param name="args">The data wrapper for the result</param>
-    public delegate void TurnCompleteEventHandler(IPlayer sender, TurnDataEventArgs args);
-
-    public class TurnDataEventArgs: EventArgs
-    {
-        public AttemptResult AttemptResult { get; }
-
-        /// <summary>
-        /// The receiver of the turn
-        /// </summary>
-        public IPlayer Receiver { get; }
-        /// <summary>
-        /// Ctor
-        /// </summary>
-        /// <param name="attemptResult">The result of the attempt</param>
-        /// <param name="actor">The player that just completed his turn</param>
-        /// <param name="receiver">The receiver</param>
-        public TurnDataEventArgs(AttemptResult attemptResult, IPlayer receiver)
-        {
-            AttemptResult = attemptResult;
-            Receiver = receiver;
-        }
-    }
+    }    
 }

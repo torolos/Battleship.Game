@@ -20,15 +20,16 @@ namespace Lib
         }
         /// <inheritDoc />
         public AttemptResult AutoPlay(IPlayer opponent)
-        {
-            
-            var coordinate = GameUtility.CreateRandomCoordinate(Used());
+        {            
+            var coordinate = GameUtility.CreateRandomCoordinate(Used(), gameSettings.BoardSize);
             // If computer had a successful hit attempt to strike neighbouring coordinates
             if (successfulHits.Any())
             {
                 coordinate = GetCoordinateFromSuccessful();
             }
-            return HitOpponent(opponent, coordinate);
+            var result = HitOpponent(opponent, coordinate);
+            HandleResult(result.ResultType, coordinate);
+            return result;
         }
 
         private Coordinate GetCoordinateFromSuccessful()
@@ -37,7 +38,15 @@ namespace Lib
             {
                 return result[GameUtility.CreateRandom(0, result.Count())];
             }
-            return GameUtility.CreateRandomCoordinate(Used());
+            return GameUtility.CreateRandomCoordinate(Used(), gameSettings.BoardSize);
+        }
+
+        private void HandleResult(ResultType resultType, Coordinate coor)
+        {
+            if (resultType == ResultType.Hit)
+                successfulHits.Add(coor); // Add a success into the buffer to be used for next hit
+            if (resultType == ResultType.Sink || resultType == ResultType.GameEnds)
+                successfulHits.Clear(); // Clear buffer after sinking a ship
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using Lib;
 using NUnit.Framework;
+using Moq;
 
 namespace UnitTests
 {
@@ -11,7 +12,9 @@ namespace UnitTests
         [Test]
         public void CreateShipsTest_ShouldNotHaveCoordinatesUsedByTwoShips()
         {
-            var factory = new ShipsFactory();
+            var settingsMock = new Mock<IGameSettings>();
+            settingsMock.SetupGet(x => x.BoardSize).Returns(10);
+            var factory = new ShipsFactory(settingsMock.Object);
             var counter = 0;
             while (counter < 50)
             {

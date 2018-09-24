@@ -43,29 +43,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttemptResult.cs" />
-    <Compile Include="Battleship.cs" />
-    <Compile Include="ComputerIntelligence.cs" />
-    <Compile Include="ComputerPlayer.cs" />
-    <Compile Include="Coordinate.cs" />
-    <Compile Include="CoordinateHelper.cs" />
-    <Compile Include="CoordinateState.cs" />
-    <Compile Include="Destroyer.cs" />
+    <Compile Include="Ships\Battleship.cs" />
+    <Compile Include="Players\ComputerPlayer.cs" />
+    <Compile Include="Coordinates\Coordinate.cs" />
+    <Compile Include="Coordinates\CoordinateHelper.cs" />
+    <Compile Include="Coordinates\CoordinateState.cs" />
+    <Compile Include="Ships\Destroyer.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="GameHandler.cs" />
-    <Compile Include="GameSettings.cs" />
-    <Compile Include="GameUtility.cs" />
-    <Compile Include="IComputerIntelligence.cs" />
-    <Compile Include="IComputerPlayer.cs" />
-    <Compile Include="ICoordinateUtility.cs" />
-    <Compile Include="IGameSettings.cs" />
-    <Compile Include="IPlayer.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Game\GameHandler.cs" />
+    <Compile Include="Game\GameSettings.cs" />
+    <Compile Include="Game\GameUtility.cs" />
+    <Compile Include="Interfaces\IComputerPlayer.cs" />
+    <Compile Include="Interfaces\ICoordinateUtility.cs" />
+    <Compile Include="Interfaces\IGameSettings.cs" />
+    <Compile Include="Interfaces\IPlayer.cs" />
+    <Compile Include="Players\Player.cs" />
     <Compile Include="ResultType.cs" />
-    <Compile Include="Ship.cs" />
-    <Compile Include="ShipList.cs" />
-    <Compile Include="ShipsFactory.cs" />
-    <Compile Include="TileInfo.cs" />
+    <Compile Include="Ships\Ship.cs" />
+    <Compile Include="Ships\ShipList.cs" />
+    <Compile Include="Ships\ShipsFactory.cs" />
+    <Compile Include="Coordinates\TileInfo.cs" />
+    <Compile Include="EventHandling\TurnCompleteEventArgs.cs" />
+    <Compile Include="EventHandling\TurnCompleteEventHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
