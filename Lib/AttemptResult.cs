@@ -23,12 +23,15 @@ namespace Lib
         /// The coordinate that was used
         /// </summary>
         public Coordinate Coordinate { get; }
+
         /// <summary>
         /// Ctor
         /// </summary>
         /// <param name="resultType">The <see cref="ResultType"/></param>
         /// <param name="shipName">The ship name</param>
         /// <param name="coordinate">The coordinate</param>
+        /// <param name="actor">The player making the attempt</param>
+        /// <param name="receiver">The player receiving the hit</param>
         public AttemptResult(ResultType resultType, 
             string shipName, Coordinate coordinate)
         {

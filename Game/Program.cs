@@ -19,24 +19,29 @@ namespace Game
             var player = new Player(string.IsNullOrWhiteSpace(playerName)? nameof(Player): playerName, settings);
             var computerPlayer = new ComputerPlayer(new CoordinateHelper(settings), settings);
             handler = new GameHandler(player, computerPlayer);
-
-
+            var writer = new AttemptResultWriter();
+            handler.TurnComplete += (s, e) =>
+            {
+                writer.Write(e.AttemptResult, s, e.Receiver);
+                if (e.AttemptResult.ResultType != ResultType.GameEnds)
+                {
+                    if (e.Receiver is IComputerPlayer)
+                    {
+                        RenderPlayer(s);
+                        handler.ComputerAttempt();
+                    }
+                    else
+                    {
+                        WaitForPlayer();
+                    }
+                }
+            };
+            WaitForPlayer();
             Console.ReadKey();
         }
 
-        static void Play()
-        {
-            while(true)
-            {
-                if (WaitForPlayer())
-                    break;
-                if (WaitForComputer())
-                    break;
-            }
-            PromptForReplay();
-        }
         
-        static bool WaitForPlayer()
+        static void WaitForPlayer()
         {
             Coordinate coordinate;
             Console.WriteLine("Enter coordinate:");
@@ -46,8 +51,7 @@ namespace Game
                 Console.WriteLine("Incorrect value, please try again.");
                 coor = Console.ReadLine();
             }
-            var result = handler.PlayerAttempt(coordinate);
-            //Console.WriteLine($"{")
+            handler.PlayerAttempt(coordinate);
         }
 
         static bool WaitForComputer()
@@ -60,6 +64,9 @@ namespace Game
 
         }
 
+
+
+        #region test
         static void TestRender(IPlayer player)
         {
             var counter = 0;
@@ -82,7 +89,7 @@ namespace Game
             }
             RenderPlayer(player);
         }
-
+        #endregion
         static void RenderPlayer(IPlayer player)
         {
             string getStateChar(Coordinate coordinate)

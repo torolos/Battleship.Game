@@ -12,6 +12,10 @@ namespace Lib
     public interface IPlayer
     {
         /// <summary>
+        /// The player's name
+        /// </summary>
+        string PlayerName { get; }
+        /// <summary>
         /// The opponents board state. Used as a template to view which coordinates
         /// have been used by player.
         /// </summary>

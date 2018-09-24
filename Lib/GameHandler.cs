@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,14 +21,16 @@ namespace Lib
             Init();
         }
 
-        public AttemptResult PlayerAttempt(Coordinate coordinate)
+        public void PlayerAttempt(Coordinate coordinate)
         {
-            return player.HitOpponent(computerPlayer, coordinate);
+            var result = player.HitOpponent(computerPlayer, coordinate);
+            OnPlayerTurnComplete(result, player, computerPlayer);
         }
 
-        public AttemptResult ComputerAttempt()
+        public void ComputerAttempt()
         {
-            return computerPlayer.AutoPlay(player);
+            var result = computerPlayer.AutoPlay(player);
+            OnPlayerTurnComplete(result, computerPlayer, player);
         }
 
         public void Reset()
@@ -41,6 +44,10 @@ namespace Lib
             computerPlayer.Reset();
         }
 
+        private void OnPlayerTurnComplete(AttemptResult result, IPlayer actor, IPlayer next)
+        {
+            Volatile.Read(ref TurnComplete)?.Invoke(actor, new TurnDataEventArgs(result, next));
+        }
     }
     /// <summary>
     /// A delegate handler firing on completion of a player's turn.
@@ -53,9 +60,20 @@ namespace Lib
     {
         public AttemptResult AttemptResult { get; }
 
-        public TurnDataEventArgs(AttemptResult attemptResult)
+        /// <summary>
+        /// The receiver of the turn
+        /// </summary>
+        public IPlayer Receiver { get; }
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="attemptResult">The result of the attempt</param>
+        /// <param name="actor">The player that just completed his turn</param>
+        /// <param name="receiver">The receiver</param>
+        public TurnDataEventArgs(AttemptResult attemptResult, IPlayer receiver)
         {
             AttemptResult = attemptResult;
+            Receiver = receiver;
         }
     }
 }

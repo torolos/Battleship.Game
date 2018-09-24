@@ -12,19 +12,19 @@ namespace Lib
     public class Player: IPlayer
     {
         private ShipList shipList;
-        protected readonly IGameSettings gameSettings;
-        private string playerName;     
+        protected readonly IGameSettings gameSettings;   
         /// <summary>
         /// Ctor
         /// </summary>
         public Player(string playerName, IGameSettings gameSettings)
         {
-            this.playerName = playerName;
+            this.PlayerName = playerName;
             this.gameSettings = gameSettings;
             Init(); 
         }
 
         #region IPlayer
+        public string PlayerName { get; }
         /// <inheritDoc />
         public IDictionary<Coordinate, CoordinateState> OpponentBoard { get; }
             = new Dictionary<Coordinate, CoordinateState>();
